@@ -124,13 +124,24 @@
     - добавлять ли пример Dataset<Row> peopleDF = spark.createDataFrame(peopleRDD, Person.class);
     examples/src/main/java/org/apache/spark/examples/sql/JavaSparkSQLExample.java" i
     - ручное задание схемы.
-5.2. Источники данных
-5.2.1. Форматы.
+6. Источники данных
+6.1. Форматы.
     - json
     - parquet
     - csv
     - Dataset<Row> sqlDF = spark.sql("SELECT * FROM parquet.`examples/src/main/resources/users.parquet`");
-5.2.2. ФС/базы
+6.2. режимы сохранения.
+    SaveMode.ErrorIfExists
+    SaveMode.Append
+    SaveMode.Overwrite
+    SaveMode.Ignore
+6.3. куда сохранять.
+    .saveAsTable - persisting table
+    df
+        .write()
+         .partitionBy("favorite_color")
+        .format("parquet")
+        .save("namesPartByColor.parquet");
 Ссылки.
 http://spark.apache.org/docs/latest/quick-start.html
 https://aws.amazon.com/ru/blogs/rus/emr-spark/
