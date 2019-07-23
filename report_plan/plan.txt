@@ -1,0 +1,84 @@
+1. Что такое Spark и для каких вещей он предназначен.
+1.1. Примеры применений.
+2. С чего начать.
+2.1. Запуск кластера локально.
+3. Простое приложение. Dataset.(sparkapp/SimpleApp)
+    - операции с Dataset(foreach, map, filter, flatMAp, collectAsList, count, etc.)
+    - pom.xml
+3.1. Submit простого приложения.Понятие Driver app.
+    - коснуться темы облаков(например API развертывания spark cluster из java приложения на Amazon)
+4. Ближе к распределенной обработке данных. RDD. Что и для чего.
+    - распределенный отказоустойчивый набор данных
+    - партицирование
+    - нюансы производительности(на примере shuffle) - (возможно пустить ниже после примеров)
+4.1. Инициализация RDD(на примере count-fail-sample/CountFailSample)
+    - из текстового файла( SparkContext::textFile)
+    - из датасета(Dataset::javaRDD, SparkContext:)
+    - разделение на партиции(зачем)
+    - операции(foreach, count, etc.)
+    - трансформации(map, filter, flatMap, mapPartitions, union, intersection, distinct, groupByKey)
+    - Почему пример со счетчиком некорректен - контект переменных
+    - куда "улетает" код из замыканий - ноды
+    - что "видит" наш код расползшийся по другим нодам.
+    - RDD Persistence(
+        MEMORY_ONLY	Store RDD as deserialized Java objects in the JVM. If the RDD does
+         not fit in memory, some partitions will not be cached and will be recomputed 
+         on the fly each time they're needed. This is the default level.
+        MEMORY_AND_DISK	Store RDD as deserialized Java objects in the JVM. If the 
+        RDD does not fit in memory, store the partitions that don't fit on disk, and 
+        read them from there when they're needed.
+        MEMORY_ONLY_SER (Java and Scala)	Store RDD as serialized Java objects (one byte
+         array per 
+        partition). This is generally more space-efficient than deserialized objects, 
+        especially when using a fast serializer, but more CPU-intensive to read.
+        MEMORY_AND_DISK_SER  (Java and Scala)	Similar to MEMORY_ONLY_SER,
+         but spill partitions that don't fit in memory to disk instead of
+          recomputing them on the fly each time they're needed.
+        DISK_ONLY	Store the RDD partitions only on disk.
+        MEMORY_ONLY_2, MEMORY_AND_DISK_2, etc.	Same as the levels above, but 
+        replicate each partition on two cluster nodes.
+        OFF_HEAP (experimental)	Similar to MEMORY_ONLY_SER, but store the data in 
+        off-heap memory. This requires off-heap memory to be enabled.
+    )
+    - persist/cache/unpersist
+4.2. Широковещательные переменные.
+    - возвращаемся к примеру выше. приходящий counter не виден в замыканиях foreach
+    надо:
+    Broadcast<int[]> broadcastVar = sc.broadcast(new int[] {1, 2, 3});
+    и в коде лезть
+    broadcastVar.value()
+    - не меняются кодом. по сути как константы
+    - сериализуются и растаскиваются по всем нодам
+    - можно использовать для быстрой доступности каких либо данных на worker nodes
+4.3. Аккумуляторы.
+    - вернуться к примеру 4.1. контект
+    - код на нодах не "видит" переменных с driver application на мастере.
+    - задача сложных аггрегаций.
+    import org.apache.spark.util.LongAccumulator;
+    LongAccumulator accumThenCounter = sc.sc().longAccumulator();
+    rdd.foreach((s)-> {
+        if (s.contains("Scala")||s.contains("scala")) {
+            accumThenCounter.add(1L);
+        }
+    });
+    - показ примера right-counter/RightCounter
+    - свой аккумулятор с более сложной логикой
+    class VectorAccumulatorV2 implements AccumulatorV2<MyVector, MyVector> {
+
+        private MyVector myVector = MyVector.createZeroVector();
+
+        public void reset() {
+            myVector.reset();
+        }
+
+        public void add(MyVector v) {
+            myVector.add(v);
+        }
+        ...
+    }
+2.2.3. Широковещательные переменные.
+
+
+Ссылки.
+http://spark.apache.org/docs/latest/quick-start.html
+https://aws.amazon.com/ru/blogs/rus/emr-spark/

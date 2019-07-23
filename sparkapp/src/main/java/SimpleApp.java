@@ -5,7 +5,6 @@ public class SimpleApp {
     String logFile = "/home/brainstorm/spark-2.4.3-bin-hadoop2.7/README.md"; // Should be some file on your system
     SparkSession spark = SparkSession.builder().appName("Simple Application").getOrCreate();
     Dataset<String> logData = spark.read().textFile(logFile).cache();
-
     long numAs = logData.filter(
       (String s) -> {return s.contains("a");}).count();
     long numBs = logData.filter((String s) -> {return s.contains("b");}).count();
