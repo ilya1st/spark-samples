@@ -16,11 +16,19 @@ public class SQL {
         Dataset<Row> df = spark.read().json(FILE_PATH);
         df.show();
         df.printSchema();
+        System.out.println("Number of partitions"+ df.rdd().partitions().length);
         /*
         df.select("name").show();
         df.select(col("name"), col("age").plus(1)).show();
         df.filter(col("age").gt(21)).show();
         df.filter(col("age").gt(21)).show();
         df.groupBy("age").count().show();*/
+        Dataset<Row> sqlDF = spark.sql("SELECT * FROM people");
+        sqlDF.show();
+        // Register the DataFrame as a global temporary view
+        df.createGlobalTempView("people");
+// Global temporary view is tied to a system preserved database `global_temp`
+        spark.sql("SELECT * FROM global_temp.people").show();
+        //spark.createDataset();
     }
 }

@@ -77,8 +77,61 @@
         ...
     }
 5. SQL. (в общем-то, а зачем?)
+    - Dataframe vs Dataset и скаловские заморочки.
+    - df.createGlobalTempView - зачем, куда
+        df.createOrReplaceTempView("people");
+        Dataset<Row> sqlDF = spark.sql("SELECT * FROM people");
+        sqlDF.show();
+    - из чего можно создавать Dataset: 
+        json, parquet, 
+        из списка своего сериализуемого типа(примери из мануала с Encoders.bean)
+        из запроса
+    public static class Person implements Serializable {
+        private String name;
+        private int age;
 
+        public String getName() {
+            return name;
+        }
 
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+        }
+
+        // Create an instance of a Bean class
+        Person person = new Person();
+        person.setName("Andy");
+        person.setAge(32);
+
+        // Encoders are created for Java beans
+        Encoder<Person> personEncoder = Encoders.bean(Person.class);
+        Dataset<Person> javaBeanDS = spark.createDataset(
+        Collections.singletonList(person),
+        personEncoder
+        );
+        javaBeanDS.show();
+    -- df.createGlobalTempView("people"); - зачем для чего
+5.1. RRD и SQL
+    - добавлять ли пример Dataset<Row> peopleDF = spark.createDataFrame(peopleRDD, Person.class);
+    examples/src/main/java/org/apache/spark/examples/sql/JavaSparkSQLExample.java" i
+    - ручное задание схемы.
+5.2. Источники данных
+5.2.1. Форматы.
+    - json
+    - parquet
+    - csv
+    - Dataset<Row> sqlDF = spark.sql("SELECT * FROM parquet.`examples/src/main/resources/users.parquet`");
+5.2.2. ФС/базы
 Ссылки.
 http://spark.apache.org/docs/latest/quick-start.html
 https://aws.amazon.com/ru/blogs/rus/emr-spark/
+https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
