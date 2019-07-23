@@ -26,9 +26,9 @@ public class SQL {
         Dataset<Row> sqlDF = spark.sql("SELECT * FROM people");
         sqlDF.show();
         // Register the DataFrame as a global temporary view
-        df.createGlobalTempView("people");
+        //df.createGlobalTempView("people");
 // Global temporary view is tied to a system preserved database `global_temp`
-        spark.sql("SELECT * FROM global_temp.people").show();
+        //spark.sql("SELECT * FROM global_temp.people").show();
         //spark.createDataset();
     }
 }
