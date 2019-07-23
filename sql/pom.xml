@@ -1,8 +1,8 @@
 <project>
   <groupId>ru.sportmaster</groupId>
-  <artifactId>count-fail-sample</artifactId>
+  <artifactId>sql</artifactId>
   <modelVersion>4.0.0</modelVersion>
-  <name>CountFailSample</name>
+  <name>SQL</name>
   <packaging>jar</packaging>
   <version>1.0</version>
   <properties>
