@@ -136,7 +136,7 @@
     SaveMode.Overwrite
     SaveMode.Ignore
 6.3. куда сохранять.
-    .saveAsTable - persisting table
+    Dataset<Row>::saveAsTable  сохранение в существующую таблицу
     df
         .write()
          .partitionBy("favorite_color")
