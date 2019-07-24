@@ -145,4 +145,6 @@
 Ссылки.
 http://spark.apache.org/docs/latest/quick-start.html
 https://aws.amazon.com/ru/blogs/rus/emr-spark/
+https://www.qubole.com/blog/apache-spark-use-cases/
 https://databricks.com/blog/2016/07/14/a-tale-of-three-apache-spark-apis-rdds-dataframes-and-datasets.html
+https://www.informationweek.com/big-data/big-data-analytics/apache-spark-3-promising-use-cases/a/d-id/1319660
