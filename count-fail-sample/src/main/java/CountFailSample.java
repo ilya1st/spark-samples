@@ -3,14 +3,11 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class CountFailSample {
-    private final static Logger LOGGER = LoggerFactory.getLogger(CountFailSample.class);
     private final static String APP_NAME = "CountFailSample";
     private final static String FILE_PATH = "/home/brainstorm/spark-2.4.3-bin-hadoop2.7/README.md";
     public static void main(String[] args) {
@@ -30,7 +27,8 @@ public class CountFailSample {
             System.out.println(
                     "GOT STRING : " + oInt.incrementAndGet() + " IN FOREACH: " + item);
         });
-        System.out.println( "counted via rdd foreach" + oInt.get());
+        System.out.println( "counted via rdd foreach " + oInt.get());
         spark.stop();
     }
 }
+
