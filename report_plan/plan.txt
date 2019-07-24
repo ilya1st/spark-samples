@@ -2,7 +2,7 @@
 1.1. Примеры применений.
 2. С чего начать.
 2.1. Запуск кластера локально.
-3. Простое приложение. Dataset.(sparkapp/SimpleApp)
+3. Простое приложение. Dataset.(simpleapp/SimpleApp)
     - операции с Dataset(foreach, map, filter, flatMAp, collectAsList, count, etc.)
     - pom.xml
 3.1. Submit простого приложения.Понятие Driver app.
