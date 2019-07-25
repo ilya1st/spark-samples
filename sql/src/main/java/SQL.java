@@ -14,7 +14,6 @@ public class SQL {
         Dataset<Row> df = spark.read().json(FILE_PATH);
         df.show();
         df.printSchema();
-        System.out.println("Number of partitions"+ df.rdd().partitions().length);
         df.select("name").show();
         df.select(col("name"), col("age").plus(1)).show();
         df.filter(col("age").gt(21)).show();
