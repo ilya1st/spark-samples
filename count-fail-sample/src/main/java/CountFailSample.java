@@ -16,10 +16,9 @@ public class CountFailSample {
         JavaSparkContext sc = JavaSparkContext.fromSparkContext(spark.sparkContext());
         Dataset<String> logData = spark.read().textFile(FILE_PATH);
         System.out.println("Number of strings: " + logData.count());
-        logData = spark.read().textFile(FILE_PATH);
-        List<String> lsr = logData.collectAsList();
-        System.out.println("ourlist: " + lsr.stream().reduce((s1, s2)->s1+s2).get());
-        JavaRDD<String> rdd = sc.parallelize(lsr, 2);
+        List<String> stringList = logData.collectAsList();
+        System.out.println("ourlist:\n " + stringList.stream().reduce((s1, s2)->s1+"\n"+s2).get());
+        JavaRDD<String> rdd = sc.parallelize(stringList, 2);
         System.out.println( "Number of data partitiond: " + rdd.getNumPartitions());
         AtomicInteger oInt = new AtomicInteger(0);
         System.out.println(  "Start sum counters");

@@ -1,5 +1,4 @@
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
@@ -13,7 +12,6 @@ public class RightCounter {
         SparkSession spark = SparkSession.builder().config(conf).getOrCreate();
         JavaSparkContext sc = JavaSparkContext.fromSparkContext(spark.sparkContext());
         JavaRDD<String> rdd = sc.textFile(FILE_PATH, 2);
-        JavaPairRDD<String,Long> rddIndexed = rdd.zipWithIndex();
         LongAccumulator accumThenCounter = sc.sc().longAccumulator();
         rdd.foreach((s)-> {
             if (s.contains("Scala")||s.contains("scala")) {

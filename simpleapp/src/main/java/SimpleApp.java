@@ -9,10 +9,7 @@ public class SimpleApp {
     long numAs = logData.filter(
       (String s) -> {return s.contains("a");}).count();
     long numBs = logData.filter((String s) -> {return s.contains("b");}).count();
-    //logData.filter((String s) -> {return s.contains("b");})
-    //  .foreach((String s) -> System.out.println(s)); // -- замыкание выполнится в driver app
     System.out.println("Lines with 'a': " + numAs + ", lines with 'b': " + numBs);
-
     spark.stop();
   }
 }
